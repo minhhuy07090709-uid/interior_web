@@ -1,0 +1,13 @@
+{% extends "base.html" %} {% block title %}Gallery - Interior Design{% endblock
+%} {% block content %}
+<h1>Các dự án đã thực hiện</h1>
+<div class="gallery">
+  {% for project in projects %}
+  <div class="project-card">
+    <img src="{{ project.image_url }}" alt="{{ project.title }}" />
+    <h3>{{ project.title }}</h3>
+    <p>{{ project.description }}</p>
+  </div>
+  {% endfor %}
+</div>
+{% endblock %}
