@@ -1,6 +1,6 @@
 import os
 from dotenv import load_dotenv
-from flask import Flask, render_template
+from flask import Flask, render_template, request, redirect, url_for
 from flask_sqlalchemy import SQLAlchemy
 load_dotenv()#read .env file, load environment variables
 
@@ -29,11 +29,11 @@ class Contact(db.Model):
 def home():
     return render_template('home.html')
 
-@app.route('/')
+@app.route('/about')
 def about():
     return render_template('about.html')
 
-@app.route('/')
+@app.route('/services')
 def services():
     return render_template('services.html')
 
@@ -41,6 +41,18 @@ def services():
 def gallery():
     projects=Project.query.all()
     return render_template('gallery.html',projects=projects)
+@app.route('/contact',methods=['GET','POST'])
+def contact():
+    if request.method=='POST':
+        name= request.form['name']
+        email=request.form['email']
+        message=request.form['message']
+
+        new_massage=Contact(name=name, email=email, message=message)
+        db.session.add(new_massage)
+        db.session.commit()
+        return redirect(url_for('contact'))
+    return render_template('contact.html')
 if __name__=='__main__':
     app.run(debug=True)
 
