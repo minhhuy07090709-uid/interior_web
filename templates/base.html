@@ -14,14 +14,49 @@
   </head>
   <body>
     <header>
-      <nav>
+      <div class="nav-container">
+        <div class="logo">Interior Design Co.</div>
+
+        <form class="search-form" action="{{ url_for('search') }}" method="GET">
+          <input
+            type="text"
+            name="q"
+            placeholder="Tìm sản phẩm..."
+            value="{{ request.args.get('q', '') }}"
+          />
+          <button type="submit">
+            <i class="fa-solid fa-magnifying-glass"></i>
+          </button>
+        </form>
+
+        <button class="hamburger" onclick="toggleMenu()">
+          <i class="fa-solid fa-bars"></i>
+        </button>
+      </div>
+
+      <!-- Overlay làm mờ nền khi menu mở -->
+      <div id="overlay" onclick="toggleMenu()"></div>
+
+      <!-- Drawer trượt từ phải -->
+      <nav id="nav-menu">
+        <button class="close-btn" onclick="toggleMenu()">
+          <i class="fa-solid fa-xmark"></i>
+        </button>
         <a href="/">Home</a>
         <a href="/about">About</a>
         <a href="/services">Services</a>
         <a href="/gallery">Gallery</a>
+        <a href="/projects">Projects</a>
         <a href="/contact">Contact</a>
       </nav>
     </header>
+
+    <script>
+      function toggleMenu() {
+        document.getElementById("nav-menu").classList.toggle("show");
+        document.getElementById("overlay").classList.toggle("show");
+      }
+    </script>
 
     <main>{% block content %}{% endblock %}</main>
 

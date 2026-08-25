@@ -1,0 +1,21 @@
+{% extends "base.html" %} {% block title %}Dự án đã thực hiện - Interior
+Design{% endblock %} {% block content %}
+<h1>Các công trình đã thi công</h1>
+<div class="gallery">
+  {% for project in projects %}
+  <div class="project-card">
+    <img src="{{ project.image_url }}" alt="{{ project.title }}" />
+    <h3>{{ project.title }}</h3>
+    <p>{{ project.description }}</p>
+    {% if project.location %}
+    <p><i class="fa-solid fa-location-dot"></i> {{ project.location }}</p>
+    {% endif %} {% if project.completed_date %}
+    <p>
+      <i class="fa-solid fa-calendar"></i> Hoàn thành: {{
+      project.completed_date.strftime('%m/%Y') }}
+    </p>
+    {% endif %}
+  </div>
+  {% endfor %}
+</div>
+{% endblock %}

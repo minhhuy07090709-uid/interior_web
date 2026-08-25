@@ -18,8 +18,17 @@ class Project(db.Model):
     title= db.Column(db.String(100),nullable=False)
     description=db.Column(db.Text, nullable=False)
     image_url= db.Column(db.String(200),nullable=False)
+    location=db.Column(db.String(200), nullable=True)
+    client_name=db.Column(db.String(100),nullable=True)
+    completed_date=db.Column(db.Date,nullable=True)
 
+class Product(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    title = db.Column(db.String(100), nullable=False)
+    description = db.Column(db.Text, nullable=False)
+    image_url = db.Column(db.String(200), nullable=False)  
 class Contact(db.Model):
+
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(100), nullable=False)
     email = db.Column(db.String(100), nullable=False)
@@ -39,8 +48,14 @@ def services():
 
 @app.route('/gallery')
 def gallery():
+    products=Product.query.all()
+    return render_template('gallery.html',products=products)
+
+@app.route('/projects')
+def project():
     projects=Project.query.all()
-    return render_template('gallery.html',projects=projects)
+    return render_template('projects.html',projects=projects)
+
 @app.route('/contact',methods=['GET','POST'])
 def contact():
     if request.method=='POST':
@@ -53,6 +68,15 @@ def contact():
         db.session.commit()
         return redirect(url_for('contact'))
     return render_template('contact.html')
+
+@app.route('/search')
+def search():
+    query=request.args.get('q','')
+    if query:
+        project=Product.query.filter(Product.title.ilike(f'%{query}%')).all()
+    else:
+        products=[]
+    return render_template('/gallery.html',products=products,search_query=query)
 if __name__=='__main__':
     app.run(debug=True)
 
