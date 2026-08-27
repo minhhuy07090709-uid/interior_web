@@ -1,0 +1,42 @@
+{% extends "base.html" %} {% block title %}{% if product %}Sửa sản phẩm{% else
+%}Thêm sản phẩm{% endif %}{% endblock %} {% block content %}
+<div class="admin-panel">
+  <h1>{% if product %}Sửa sản phẩm{% else %}Thêm sản phẩm mới{% endif %}</h1>
+
+  <form method="POST" class="admin-form">
+    <div>
+      <label for="title">Tên sản phẩm</label>
+      <input
+        type="text"
+        id="title"
+        name="title"
+        value="{{ product.title if product else '' }}"
+        required
+      />
+    </div>
+    <div>
+      <label for="description">Mô tả</label>
+      <textarea id="description" name="description" rows="4" required>
+{{ product.description if product else '' }}</textarea
+      >
+    </div>
+    <div>
+      <label for="image_url">Link ảnh</label>
+      <input
+        type="text"
+        id="image_url"
+        name="image_url"
+        value="{{ product.image_url if product else '' }}"
+        required
+      />
+    </div>
+    <button type="submit">
+      {% if product %}Cập nhật{% else %}Thêm mới{% endif %}
+    </button>
+  </form>
+
+  <a href="{{ url_for('admin.products') }}" class="back-link"
+    >← Quay lại danh sách</a
+  >
+</div>
+{% endblock %}

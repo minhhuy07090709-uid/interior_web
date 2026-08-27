@@ -1,0 +1,55 @@
+{% extends "base.html" %} {% block title %}Quản lý sản phẩm{% endblock %} {%
+block content %}
+<div class="admin-panel">
+  <div class="admin-header">
+    <h1>Quản lý sản phẩm</h1>
+    <a href="{{ url_for('admin.add_product') }}" class="btn-add"
+      >+ Thêm sản phẩm</a
+    >
+  </div>
+
+  <table class="admin-table">
+    <thead>
+      <tr>
+        <th>Ảnh</th>
+        <th>Tên</th>
+        <th>Mô tả</th>
+        <th>Hành động</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for product in products %}
+      <tr>
+        <td>
+          <img
+            src="{{ product.image_url }}"
+            alt="{{ product.title }}"
+            class="admin-thumb"
+          />
+        </td>
+        <td>{{ product.title }}</td>
+        <td>{{ product.description[:50] }}...</td>
+        <td class="admin-actions">
+          <a
+            href="{{ url_for('admin.edit_product', product_id=product.id) }}"
+            class="btn-edit"
+            >Sửa</a
+          >
+          <form
+            method="POST"
+            action="{{ url_for('admin.delete_product', product_id=product.id) }}"
+            onsubmit="return confirm('Xóa sản phẩm này?');"
+          >
+            <button type="submit" class="btn-delete">Xóa</button>
+          </form>
+        </td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+
+  <a href="{{ url_for('admin.home') }}" class="back-link"
+    >← Về trang quản trị</a
+  >
+</div>
+{% endblock %}

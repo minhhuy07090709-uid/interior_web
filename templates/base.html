@@ -17,7 +17,11 @@
       <div class="nav-container">
         <div class="logo">Interior Design Co.</div>
 
-        <form class="search-form" action="{{ url_for('search') }}" method="GET">
+        <form
+          class="search-form"
+          action="{{ url_for('public.search') }}"
+          method="GET"
+        >
           <input
             type="text"
             name="q"
@@ -42,12 +46,12 @@
         <button class="close-btn" onclick="toggleMenu()">
           <i class="fa-solid fa-xmark"></i>
         </button>
-        <a href="/">Home</a>
-        <a href="/about">About</a>
-        <a href="/services">Services</a>
-        <a href="/gallery">Gallery</a>
-        <a href="/projects">Projects</a>
-        <a href="/contact">Contact</a>
+        <a href="{{ url_for('public.home') }}">Trang chủ</a>
+        <a href="{{ url_for('public.about') }}">Về chúng tôi</a>
+        <a href="{{ url_for('public.services') }}">Dịch vụ</a>
+        <a href="{{ url_for('public.gallery') }}">Sản phẩm</a>
+        <a href="{{ url_for('public.projects') }}">Dự án</a>
+        <a href="{{ url_for('public.contact') }}">Liên hệ</a>
       </nav>
     </header>
 
