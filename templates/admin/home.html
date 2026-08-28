@@ -1,16 +1,26 @@
-<a href="{{ url_for('admin.products') }}" class="admin-menu-item">
-  <i class="fa-solid fa-couch"></i>
-  <span>Quản lý sản phẩm</span>
-</a>
-<a href="{{ url_for('admin.projects') }}" class="admin-menu-item">
-  <i class="fa-solid fa-building"></i>
-  <span>Quản lý dự án</span>
-</a>
-<a href="{{ url_for('admin.messages') }}" class="admin-menu-item">
-  <i class="fa-solid fa-envelope"></i>
-  <span>Tin nhắn khách hàng</span>
-</a>
-<a href="{{ url_for('admin.logout') }}" class="admin-menu-item logout">
-  <i class="fa-solid fa-right-from-bracket"></i>
-  <span>Đăng xuất</span>
-</a>
+{% extends "base.html" %} {% block title %}Trang quản trị{% endblock %} {% block
+content %}
+<div class="admin-panel">
+  <h1>Trang quản trị</h1>
+  <div class="admin-menu">
+    <a href="{{ url_for('admin.products') }}" class="admin-menu-item">
+      <i class="fa-solid fa-couch"></i>
+      <span>Quản lý sản phẩm</span>
+    </a>
+    <a href="{{ url_for('admin.projects') }}" class="admin-menu-item">
+      <i class="fa-solid fa-building"></i>
+      <span>Quản lý dự án</span>
+    </a>
+    <!--
+        <a href="{{ url_for('admin.messages') }}" class="admin-menu-item">
+            <i class="fa-solid fa-envelope"></i>
+            <span>Tin nhắn khách hàng</span>
+        </a>
+        -->
+    <a href="{{ url_for('admin.logout') }}" class="admin-menu-item logout">
+      <i class="fa-solid fa-right-from-bracket"></i>
+      <span>Đăng xuất</span>
+    </a>
+  </div>
+</div>
+{% endblock %}

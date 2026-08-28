@@ -1,0 +1,45 @@
+{% extends "base.html" %} {% block title %}Tin nhắn khách hàng{% endblock %} {%
+block content %}
+<div class="admin-panel">
+  <div class="admin-header">
+    <h1>Tin nhắn khách hàng</h1>
+  </div>
+
+  {% if messages %}
+  <table class="admin-table">
+    <thead>
+      <tr>
+        <th>Tên</th>
+        <th>Email</th>
+        <th>Nội dung</th>
+        <th>Hành động</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for msg in messages %}
+      <tr>
+        <td>{{ msg.name }}</td>
+        <td>{{ msg.email }}</td>
+        <td>{{ msg.message }}</td>
+        <td class="admin-actions">
+          <form
+            method="POST"
+            action="{{ url_for('admin.delete_message', message_id=msg.id) }}"
+            onsubmit="return confirm('Xóa tin nhắn này?');"
+          >
+            <button type="submit" class="btn-delete">Xóa</button>
+          </form>
+        </td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+  {% else %}
+  <p>Chưa có tin nhắn nào.</p>
+  {% endif %}
+
+  <a href="{{ url_for('admin.home') }}" class="back-link"
+    >← Về trang quản trị</a
+  >
+</div>
+{% endblock %}

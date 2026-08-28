@@ -38,7 +38,70 @@ def logout():
     session.pop('logged_in',None)
     return redirect(url_for('admin.login'))
 
-#ADMIN CRUD
+@admin_bp.route('/projects')
+@login_required
+def projects():
+    all_projects=Project.query.all()
+    return render_template('admin/projects.html',projects=all_projects)
+
+@admin_bp.route('/projects/add',  methods=['GET','POST'])
+@login_required
+def add_project():
+
+    if request.method=='POST':
+        title=request.form['title']
+        description=request.form['description']
+        image_url=request.form['image_url']
+        location=request.form['location']
+        client_name=request.form['client_name']
+        new_project=Project(
+            title=title,
+            description=description,
+            image_url=image_url,
+            location=location,
+            client_name=client_name
+        )
+        db.session.add(new_project)
+        db.session.commit()
+        return redirect(url_for('admin.projects'))
+    return render_template('admin/project_form.html',project=None)
+
+@admin_bp.route('/projects/edit/<int:project_id>',methods=['GET','POST'])
+@login_required
+def edit_project(project_id):
+    project=Project.query.get_or_404(project_id)
+    if request.method=='POST':
+        project.title = request.form['title']
+        project.description = request.form['description']
+        project.image_url = request.form['image_url']
+        project.location = request.form['location']
+        project.client_name = request.form['client_name']
+        db.session.commit()
+        return redirect(url_for('admin.projects'))
+    return render_template('admin/project_form.html', project=project)
+
+@admin_bp.route('projects/delete/<int:project_id>',methods=['POST'])
+@login_required
+def delete_project(project_id):
+    project=Project.query.get_or_404(project_id)
+    db.session.delete(project)
+    db.session.commit()
+    return redirect(url_for('admin.projects'))
+
+@admin_bp.route('/messages')
+@login_required
+def messages():
+    all_messages=Contact.query.order_by(Contact.id.desc()).all()
+    return render_template('admin/messages.html',messages=all_messages)
+
+@admin_bp.route('/messages/delete/<int:message_id>', methods=['POST'])
+@login_required
+def delete_message(message_id):
+    message = Contact.query.get_or_404(message_id)
+    db.session.delete(message)
+    db.session.commit()
+    return redirect(url_for('admin.messages'))
+
 @admin_bp.route('/products')
 @login_required
 def products():

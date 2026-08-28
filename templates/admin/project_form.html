@@ -1,0 +1,60 @@
+{% extends "base.html" %} {% block title %}{% if project %}Sửa dự án{% else
+%}Thêm dự án{% endif %}{% endblock %} {% block content %}
+<div class="admin-panel">
+  <h1>{% if project %}Sửa dự án{% else %}Thêm dự án mới{% endif %}</h1>
+
+  <form method="POST" class="admin-form">
+    <div>
+      <label for="title">Tên dự án</label>
+      <input
+        type="text"
+        id="title"
+        name="title"
+        value="{{ project.title if project else '' }}"
+        required
+      />
+    </div>
+    <div>
+      <label for="description">Mô tả</label>
+      <textarea id="description" name="description" rows="4" required>
+{{ project.description if project else '' }}</textarea
+      >
+    </div>
+    <div>
+      <label for="image_url">Link ảnh</label>
+      <input
+        type="text"
+        id="image_url"
+        name="image_url"
+        value="{{ project.image_url if project else '' }}"
+        required
+      />
+    </div>
+    <div>
+      <label for="location">Địa điểm</label>
+      <input
+        type="text"
+        id="location"
+        name="location"
+        value="{{ project.location if project else '' }}"
+      />
+    </div>
+    <div>
+      <label for="client_name">Tên khách hàng</label>
+      <input
+        type="text"
+        id="client_name"
+        name="client_name"
+        value="{{ project.client_name if project else '' }}"
+      />
+    </div>
+    <button type="submit">
+      {% if project %}Cập nhật{% else %}Thêm mới{% endif %}
+    </button>
+  </form>
+
+  <a href="{{ url_for('admin.projects') }}" class="back-link"
+    >← Quay lại danh sách</a
+  >
+</div>
+{% endblock %}

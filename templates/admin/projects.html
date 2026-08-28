@@ -1,0 +1,57 @@
+{% extends "base.html" %} {% block title %}Quản lý dự án{% endblock %} {% block
+content %}
+<div class="admin-panel">
+  <div class="admin-header">
+    <h1>Quản lý dự án</h1>
+    <a href="{{ url_for('admin.add_project') }}" class="btn-add"
+      >+ Thêm dự án</a
+    >
+  </div>
+
+  <table class="admin-table">
+    <thead>
+      <tr>
+        <th>Ảnh</th>
+        <th>Tên dự án</th>
+        <th>Địa điểm</th>
+        <th>Khách hàng</th>
+        <th>Hành động</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for project in projects %}
+      <tr>
+        <td>
+          <img
+            src="{{ project.image_url }}"
+            alt="{{ project.title }}"
+            class="admin-thumb"
+          />
+        </td>
+        <td>{{ project.title }}</td>
+        <td>{{ project.location or '-' }}</td>
+        <td>{{ project.client_name or '-' }}</td>
+        <td class="admin-actions">
+          <a
+            href="{{ url_for('admin.edit_project', project_id=project.id) }}"
+            class="btn-edit"
+            >Sửa</a
+          >
+          <form
+            method="POST"
+            action="{{ url_for('admin.delete_project', project_id=project.id) }}"
+            onsubmit="return confirm('Xóa dự án này?');"
+          >
+            <button type="submit" class="btn-delete">Xóa</button>
+          </form>
+        </td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+
+  <a href="{{ url_for('admin.home') }}" class="back-link"
+    >← Về trang quản trị</a
+  >
+</div>
+{% endblock %}
