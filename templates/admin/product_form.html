@@ -3,7 +3,7 @@
 <div class="admin-panel">
   <h1>{% if product %}Sửa sản phẩm{% else %}Thêm sản phẩm mới{% endif %}</h1>
 
-  <form method="POST" class="admin-form">
+  <form method="POST" class="admin-form" enctype="multipart/form-data">
     <div>
       <label for="title">Tên sản phẩm</label>
       <input
@@ -21,13 +21,114 @@
       >
     </div>
     <div>
-      <label for="image_url">Link ảnh</label>
+      <label for="price">Giá (VNĐ)</label>
       <input
-        type="text"
-        id="image_url"
-        name="image_url"
-        value="{{ product.image_url if product else '' }}"
-        required
+        type="number"
+        id="price"
+        name="price"
+        value="{{ product.price if product else '' }}"
+        min="0"
+        step="1000"
+      />
+    </div>
+    <div>
+      <label for="category">Danh mục</label>
+      <select id="category" name="category">
+        <option value="">-- Chọn danh mục --</option>
+        <option
+          value="ban"
+          {%
+          if
+          product
+          and
+          product.category=""
+          ="ban"
+          %}selected{%
+          endif
+          %}
+        >
+          Bàn
+        </option>
+        <option
+          value="ghe"
+          {%
+          if
+          product
+          and
+          product.category=""
+          ="ghe"
+          %}selected{%
+          endif
+          %}
+        >
+          Ghế
+        </option>
+        <option
+          value="tu"
+          {%
+          if
+          product
+          and
+          product.category=""
+          ="tu"
+          %}selected{%
+          endif
+          %}
+        >
+          Tủ
+        </option>
+        <option
+          value="giuong"
+          {%
+          if
+          product
+          and
+          product.category=""
+          ="giuong"
+          %}selected{%
+          endif
+          %}
+        >
+          Giường
+        </option>
+        <option
+          value="trang-tri"
+          {%
+          if
+          product
+          and
+          product.category=""
+          ="trang-tri"
+          %}selected{%
+          endif
+          %}
+        >
+          Trang trí
+        </option>
+      </select>
+    </div>
+    <div>
+      <label for="image">Ảnh sản phẩm</label>
+      {% if product and product.image_url %}
+      <p>
+        <img
+          src="{{ product.image_url }}"
+          style="width: 100px; border-radius: 6px; margin-bottom: 8px"
+        />
+      </p>
+      {% endif %}
+      <input
+        type="file"
+        id="image"
+        name="image"
+        accept="image/*"
+        {%
+        if
+        not
+        product
+        %}required{%
+        endif
+        %}
       />
     </div>
     <button type="submit">

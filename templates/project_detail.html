@@ -1,0 +1,29 @@
+{% extends "base.html" %} {% block title %}{{ project.title }} - Interior
+Design{% endblock %} {% block content %}
+<div class="detail-page">
+  <div class="detail-image">
+    <img src="{{ project.image_url }}" alt="{{ project.title }}" />
+  </div>
+  <div class="detail-info">
+    <h1>{{ project.title }}</h1>
+    {% if project.location %}
+    <p><i class="fa-solid fa-location-dot"></i> {{ project.location }}</p>
+    {% endif %} {% if project.client_name %}
+    <p>
+      <i class="fa-solid fa-user"></i> Khách hàng: {{ project.client_name }}
+    </p>
+    {% endif %}
+    <p class="detail-description">{{ project.description }}</p>
+
+    <div class="detail-cta">
+      <a href="{{ url_for('public.contact') }}" class="btn-cta"
+        >Liên hệ tư vấn</a
+      >
+    </div>
+  </div>
+</div>
+
+<a href="{{ url_for('public.projects') }}" class="back-link"
+  >← Quay lại dự án</a
+>
+{% endblock %}

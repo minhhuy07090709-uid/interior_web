@@ -3,7 +3,7 @@
 <div class="admin-panel">
   <h1>{% if project %}Sửa dự án{% else %}Thêm dự án mới{% endif %}</h1>
 
-  <form method="POST" class="admin-form">
+  <form method="POST" class="admin-form"  enctype="multipart/form-data">
     <div>
       <label for="title">Tên dự án</label>
       <input
@@ -21,14 +21,12 @@
       >
     </div>
     <div>
-      <label for="image_url">Link ảnh</label>
-      <input
-        type="text"
-        id="image_url"
-        name="image_url"
-        value="{{ project.image_url if project else '' }}"
-        required
-      />
+        <label for="image">Ảnh dự án</label>
+        {% if project and project.image_url %}
+            <p><img src="{{ project.image_url }}" style="width:100px; border-radius:6px; margin-bottom:8px;"></p>
+        {% endif %}
+        <input type="file" id="image" name="image" accept="image/*" {% if not project %}required{% endif %}>
+    </div>
     </div>
     <div>
       <label for="location">Địa điểm</label>

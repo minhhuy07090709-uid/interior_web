@@ -14,7 +14,9 @@ class Product(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     title = db.Column(db.String(100), nullable=False)
     description = db.Column(db.Text, nullable=False)
-    image_url = db.Column(db.String(200), nullable=False)  
+    image_url = db.Column(db.String(500), nullable=False)  
+    price=db.Column(db.Integer,nullable=True)
+    category=db.Column(db.String(50),nullable=True)
 class Contact(db.Model):
 
     id = db.Column(db.Integer, primary_key=True)

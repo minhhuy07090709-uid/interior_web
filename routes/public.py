@@ -49,3 +49,13 @@ def search():
     else:
         products=[]
     return render_template('/gallery.html',products=products,search_query=query)
+
+@public_bp.route('/product/<int:product_id>')
+def product_detail(product_id):
+    product = Product.query.get_or_404(product_id)
+    return render_template('product_detail.html', product=product)
+
+@public_bp.route('/project/<int:project_id>')
+def project_detail(project_id):
+    project = Project.query.get_or_404(project_id)
+    return render_template('project_detail.html', project=project)
