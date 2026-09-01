@@ -140,7 +140,7 @@ def add_product():
         category = request.form.get('category') or None
         image_file = request.files.get('image')
         image_url = save_image(image_file)
-
+        stock_quantity = int(request.form.get('stock_quantity', 0))
         if not image_url:
             return render_template('admin/product_form.html', product=None, error='Vui lòng chọn ảnh hợp lệ (jpg, png, webp)')
 
@@ -149,7 +149,8 @@ def add_product():
             description=description,
             image_url=image_url,
             price=price,
-            category=category
+            category=category,
+            stock_quantity=stock_quantity
         )
         db.session.add(new_product)
         db.session.commit()
@@ -165,9 +166,10 @@ def edit_product(product_id):
     if request.method == 'POST':
         product.title = request.form['title']
         product.description = request.form['description']
-        product.price=request.form['price']
-        product.category=request.form['category']
-        
+        product.price = request.form.get('price') or None
+        product.category = request.form.get('category') or None
+        product.stock_quantity =int(request.form.get('stock_quantity'),0)
+
         image_file = request.files.get('image')
         if image_file and image_file.filename:
             new_url = save_image(image_file)

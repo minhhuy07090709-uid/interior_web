@@ -427,3 +427,74 @@ footer {
 .btn-cta:hover {
   background-color: #1a252f;
 }
+
+.filter-form {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-bottom: 25px;
+  padding: 18px;
+  background: #f8f9fa;
+  border-radius: 8px;
+}
+
+.filter-form input,
+.filter-form select {
+  padding: 8px 12px;
+  border: 1px solid #ddd;
+  border-radius: 6px;
+  font-size: 14px;
+}
+
+.filter-form input[type="number"] {
+  width: 120px;
+}
+
+.filter-form button {
+  background-color: #2c3e50;
+  color: white;
+  border: none;
+  padding: 8px 20px;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+.btn-clear {
+  display: flex;
+  align-items: center;
+  color: #7f8c8d;
+  text-decoration: none;
+  font-size: 14px;
+}
+.stock-badge {
+  display: inline-block;
+  padding: 3px 10px;
+  border-radius: 12px;
+  font-size: 12px;
+  font-weight: bold;
+  margin: 8px 0 4px;
+}
+
+.status-in {
+  background-color: #d4edda;
+  color: #155724;
+}
+
+.status-low {
+  background-color: #fff3cd;
+  color: #856404;
+}
+
+.status-out {
+  background-color: #f8d7da;
+  color: #721c24;
+}
+
+.detail-stock {
+  display: inline-block;
+  padding: 5px 14px;
+  border-radius: 14px;
+  font-size: 14px;
+  font-weight: bold;
+  margin-bottom: 10px;
+}

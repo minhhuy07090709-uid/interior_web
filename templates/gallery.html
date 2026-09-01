@@ -1,27 +1,59 @@
 {% extends "base.html" %} {% block title %}Sản phẩm - Interior Design{% endblock
 %} {% block content %}
 <h1>Sản phẩm nội thất</h1>
-{% if search_query %}
-<p>
-  Kết quả tìm kiếm cho "<strong>{{ search_query }}</strong>": {{ products|length
-  }} sản phẩm
-</p>
+
+<form method="GET" action="{{ url_for('public.gallery') }}" class="filter-form">
+  <input
+    type="text"
+    name="q"
+    placeholder="Tìm theo tên..."
+    value="{{ search_query }}"
+  />
+
+  <select name="category">
+    <option value="">Tất cả danh mục</option>
+    <option value="ban" {% if selected_category == 'ban' %}selected{% endif %}>Bàn</option>
+<option value="ghe" {% if selected_category == 'ghe' %}selected{% endif %}>Ghế</option>
+<option value="tu" {% if selected_category == 'tu' %}selected{% endif %}>Tủ</option>
+<option value="giuong" {% if selected_category == 'giuong' %}selected{% endif %}>Giường</option>
+<option value="trang-tri" {% if selected_category == 'trang-tri' %}selected{% endif %}>Trang trí</option>
+  </select>
+
+  <input
+    type="number"
+    name="min_price"
+    placeholder="Giá từ"
+    value="{{ selected_min }}"
+    min="0"
+    step="10000"
+  />
+  <input
+    type="number"
+    name="max_price"
+    placeholder="Giá đến"
+    value="{{ selected_max }}"
+    min="0"
+    step="10000"
+  />
+
+  <button type="submit">Lọc</button>
+  <a href="{{ url_for('public.gallery') }}" class="btn-clear">Xóa lọc</a>
+</form>
+
+{% if search_query or selected_category or selected_min or selected_max %}
+<p>Tìm thấy {{ products|length }} sản phẩm</p>
 {% endif %}
+
 <div class="gallery">
-  {% for product in products %}
-  <a
-    href="{{ url_for('public.product_detail', product_id=product.id) }}"
-    class="project-card-link"
-  >
-    <div class="project-card">
-      <img src="{{ product.image_url }}" alt="{{ product.title }}" />
-      <h3>{{ product.title }}</h3>
-      {% if product.price %}
-      <p class="card-price">{{ "{:,}".format(product.price) }} đ</p>
-      {% endif %}
-      <p>{{ product.description[:60] }}...</p>
-    </div>
-  </a>
-  {% endfor %}
+    {% for product in products %}
+    <a href="{{ url_for('public.product_detail', product_id=product.id) }}" class="project-card-link">
+        <div class="project-card">
+            <img src="{{ product.image_url }}" alt="{{ product.title }}">
+            <span class="stock-badge {{ product.stock_status.class }}">{{ product.stock_status.label }}</span>
+            <h3>{{ product.title }}</h3>
+            <p class="card-price">{{ "{:,}".format(product.price) if product.price else 'Liên hệ' }} {{ 'đ' if product.price else '' }}</p>
+        </div>
+    </a>
+    {% endfor %}
 </div>
 {% endblock %}

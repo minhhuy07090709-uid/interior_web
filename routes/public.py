@@ -20,8 +20,7 @@ def services():
 
 @public_bp.route('/gallery')
 def gallery():
-    products=Product.query.all()
-    return render_template('gallery.html',products=products)
+    return search()
 
 @public_bp.route('/projects')
 def projects():
@@ -44,12 +43,29 @@ def contact():
 @public_bp.route('/search')
 def search():
     query=request.args.get('q','')
-    if query:
-        products=Product.query.filter(Product.title.ilike(f'%{query}%')).all()
-    else:
-        products=[]
-    return render_template('/gallery.html',products=products,search_query=query)
+    category=request.args.get('category','')
+    min_price=request.args.get('min_price','')
+    max_price=request.args.get('max_price','')
 
+    products_query=Product.query
+    if query:
+        products_query=products_query.filter(Product.title.ilike(f'%{query}%')).all()
+    if category:
+        products_query=products_query.filter(Product.category==category)
+    if min_price:
+        products_query=products_query.filter(Product.price>=int(min_price))
+    if max_price:
+        products_query=products_query.filter(Product.price<=int(max_price))
+
+    products=Product.query.all()
+    return render_template(
+        'gallery.html',
+        products=products,
+        search_query=query,
+        selected_category=category,
+        selected_min=min_price,
+        selected_max=max_price
+    )
 @public_bp.route('/product/<int:product_id>')
 def product_detail(product_id):
     product = Product.query.get_or_404(product_id)

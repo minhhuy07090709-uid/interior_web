@@ -11,6 +11,7 @@ Design{% endblock %} {% block content %}
     {% endif %} {% if product.price %}
     <p class="detail-price">{{ "{:,}".format(product.price) }} đ</p>
     {% endif %}
+    <p class="detail-stock {{ product.stock_status.class }}">{{ product.stock_status.label }}</p>
     <p class="detail-description">{{ product.description }}</p>
 
     <div class="detail-cta">
