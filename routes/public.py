@@ -2,7 +2,7 @@
 from flask import Blueprint, render_template, request, redirect, url_for
 from models import Product, Project, Contact
 from extensions import db
-
+from sqlalchemy import or_
 public_bp= Blueprint('public',__name__)
 
 #---Route---
@@ -39,32 +39,43 @@ def contact():
         db.session.commit()
         return redirect(url_for('public.contact'))
     return render_template('contact.html')
-
+PRICE_RANGES={
+    'duoi-1tr': (0, 1000000),
+    '1-3tr': (1000000, 3000000),
+    '3-5tr': (3000000, 5000000),
+    '5-10tr': (5000000, 10000000),
+    'tren-10tr': (10000000, None),
+}
 @public_bp.route('/search')
 def search():
     query=request.args.get('q','')
     category=request.args.get('category','')
-    min_price=request.args.get('min_price','')
-    max_price=request.args.get('max_price','')
+    price_ranges=request.args.getlist('price_range')
 
     products_query=Product.query
     if query:
-        products_query=products_query.filter(Product.title.ilike(f'%{query}%')).all()
+        products_query=products_query.filter(Product.title.ilike(f'%{query}%'))
     if category:
         products_query=products_query.filter(Product.category==category)
-    if min_price:
-        products_query=products_query.filter(Product.price>=int(min_price))
-    if max_price:
-        products_query=products_query.filter(Product.price<=int(max_price))
+    if price_ranges:
+        conditions=[]
+        for r in price_ranges:
+            if r in PRICE_RANGES:
+                min_p,max_p=PRICE_RANGES[r]
+                if max_p is None:
+                    conditions.append(Product.price>=min_p)
+                else:
+                    conditions.append(Product.price.between(min_p,max_p))
+        if conditions:
+            products_query=products_query.filter(or_(*conditions))
 
-    products=Product.query.all()
+    products=products_query.all()
     return render_template(
         'gallery.html',
         products=products,
         search_query=query,
         selected_category=category,
-        selected_min=min_price,
-        selected_max=max_price
+        selected_price_ranges=price_ranges
     )
 @public_bp.route('/product/<int:product_id>')
 def product_detail(product_id):

@@ -4,6 +4,7 @@
   <h1>{% if project %}Sửa dự án{% else %}Thêm dự án mới{% endif %}</h1>
 
   <form method="POST" class="admin-form"  enctype="multipart/form-data">
+    <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
     <div>
       <label for="title">Tên dự án</label>
       <input

@@ -4,10 +4,11 @@ from flask import Blueprint, render_template, request, redirect, url_for, sessio
 from models import Product, Project, Contact
 from extensions import db
 from utils import save_image
+from werkzeug.security import check_password_hash
 
 admin_bp = Blueprint('admin', __name__, url_prefix='/admin')
 ADMIN_USERNAME = os.getenv('ADMIN_USERNAME')
-ADMIN_PASSWORD = os.getenv('ADMIN_PASSWORD')
+ADMIN_PASSWORD_HASH = os.getenv('ADMIN_PASSWORD_HASH')
 
 def login_required(f):
     @wraps(f)
@@ -23,7 +24,7 @@ def login():
     if request.method == 'POST':
         username = request.form['username']
         password = request.form['password']
-        if username == ADMIN_USERNAME and password == ADMIN_PASSWORD:
+        if username == ADMIN_USERNAME and check_password_hash(ADMIN_PASSWORD_HASH,password):
             session['logged_in'] = True
             return redirect(url_for('admin.home'))
         else:

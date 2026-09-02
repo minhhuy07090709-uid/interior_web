@@ -3,45 +3,31 @@
 <h1>Sản phẩm nội thất</h1>
 
 <form method="GET" action="{{ url_for('public.gallery') }}" class="filter-form">
-  <input
-    type="text"
-    name="q"
-    placeholder="Tìm theo tên..."
-    value="{{ search_query }}"
-  />
+    <input type="text" name="q" placeholder="Tìm theo tên..." value="{{ search_query }}">
 
-  <select name="category">
-    <option value="">Tất cả danh mục</option>
-    <option value="ban" {% if selected_category == 'ban' %}selected{% endif %}>Bàn</option>
-<option value="ghe" {% if selected_category == 'ghe' %}selected{% endif %}>Ghế</option>
-<option value="tu" {% if selected_category == 'tu' %}selected{% endif %}>Tủ</option>
-<option value="giuong" {% if selected_category == 'giuong' %}selected{% endif %}>Giường</option>
-<option value="trang-tri" {% if selected_category == 'trang-tri' %}selected{% endif %}>Trang trí</option>
-  </select>
+    <select name="category">
+        <option value="">Tất cả danh mục</option>
+        <option value="ban" {% if selected_category == 'ban' %}selected{% endif %}>Bàn</option>
+        <option value="ghe" {% if selected_category == 'ghe' %}selected{% endif %}>Ghế</option>
+        <option value="tu" {% if selected_category == 'tu' %}selected{% endif %}>Tủ</option>
+        <option value="giuong" {% if selected_category == 'giuong' %}selected{% endif %}>Giường</option>
+        <option value="trang-tri" {% if selected_category == 'trang-tri' %}selected{% endif %}>Trang trí</option>
+    </select>
 
-  <input
-    type="number"
-    name="min_price"
-    placeholder="Giá từ"
-    value="{{ selected_min }}"
-    min="0"
-    step="10000"
-  />
-  <input
-    type="number"
-    name="max_price"
-    placeholder="Giá đến"
-    value="{{ selected_max }}"
-    min="0"
-    step="10000"
-  />
+    <div class="price-checkboxes">
+        <label class="price-check"><input type="checkbox" name="price_range" value="duoi-1tr" {% if 'duoi-1tr' in selected_price_ranges %}checked{% endif %}> Dưới 1 triệu</label>
+        <label class="price-check"><input type="checkbox" name="price_range" value="1-3tr" {% if '1-3tr' in selected_price_ranges %}checked{% endif %}> 1 - 3 triệu</label>
+        <label class="price-check"><input type="checkbox" name="price_range" value="3-5tr" {% if '3-5tr' in selected_price_ranges %}checked{% endif %}> 3 - 5 triệu</label>
+        <label class="price-check"><input type="checkbox" name="price_range" value="5-10tr" {% if '5-10tr' in selected_price_ranges %}checked{% endif %}> 5 - 10 triệu</label>
+        <label class="price-check"><input type="checkbox" name="price_range" value="tren-10tr" {% if 'tren-10tr' in selected_price_ranges %}checked{% endif %}> Trên 10 triệu</label>
+    </div>
 
-  <button type="submit">Lọc</button>
-  <a href="{{ url_for('public.gallery') }}" class="btn-clear">Xóa lọc</a>
+    <button type="submit">Lọc</button>
+    <a href="{{ url_for('public.gallery') }}" class="btn-clear">Xóa lọc</a>
 </form>
 
-{% if search_query or selected_category or selected_min or selected_max %}
-<p>Tìm thấy {{ products|length }} sản phẩm</p>
+{% if search_query or selected_category or selected_price_ranges %}
+    <p>Tìm thấy {{ products|length }} sản phẩm</p>
 {% endif %}
 
 <div class="gallery">
@@ -51,7 +37,7 @@
             <img src="{{ product.image_url }}" alt="{{ product.title }}">
             <span class="stock-badge {{ product.stock_status.class }}">{{ product.stock_status.label }}</span>
             <h3>{{ product.title }}</h3>
-            <p class="card-price">{{ "{:,}".format(product.price) if product.price else 'Liên hệ' }} {{ 'đ' if product.price else '' }}</p>
+            <p class="card-price">{{ "{:,}".format(product.price) if product.price else 'Liên hệ' }}{{ ' đ' if product.price else '' }}</p>
         </div>
     </a>
     {% endfor %}

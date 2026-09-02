@@ -4,6 +4,8 @@ from flask import Flask
 from extensions import db
 import cloudinary
 from utils import save_image
+from flask_wtf import CSRFProtect
+
 load_dotenv()#read .env file, load environment variables
 
 app= Flask(__name__)
@@ -13,6 +15,7 @@ db_host=os.getenv('DB_HOST')
 db_name=os.getenv('DB_NAME')
 app.config['SQLALCHEMY_DATABASE_URI']=f'mysql+pymysql://{db_user}:{db_password}@{db_host}/{db_name}'
 app.config['SECRET_KEY']=os.getenv('SECRET_KEY')
+app.config['MAX_CONTENT_LENGTH']=5*1024*1024
 cloudinary.config(
     cloud_name=os.getenv('CLOUDINARY_CLOUD_NAME'),
     api_key=os.getenv('CLOUDINARY_API_KEY'),
@@ -20,7 +23,8 @@ cloudinary.config(
 
 )
 db.init_app(app)
-
+csrf=CSRFProtect()
+csrf.init_app(app)
 from routes.public import public_bp
 from routes.admin import admin_bp
 app.register_blueprint(public_bp)

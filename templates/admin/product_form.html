@@ -7,6 +7,7 @@
     <h1>{% if product %}Sửa sản phẩm{% else %}Thêm sản phẩm mới{% endif %}</h1>
 
     <form method="POST" class="admin-form" enctype="multipart/form-data">
+        <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
         <div>
             <label for="title">Tên sản phẩm</label>
             <input type="text" id="title" name="title" value="{{ product.title if product else '' }}" required>

@@ -5,6 +5,7 @@ content %}
 <p style="color: red">{{ error }}</p>
 {% endif %}
 <form method="POST" action="/admin/login">
+  <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
   <div>
     <label for="username">Tên đăng nhập:</label>
     <input type="text" id="username" name="username" required />

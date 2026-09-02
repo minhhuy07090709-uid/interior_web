@@ -42,6 +42,7 @@ content %}
             action="{{ url_for('admin.delete_project', project_id=project.id) }}"
             onsubmit="return confirm('Xóa dự án này?');"
           >
+          <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
             <button type="submit" class="btn-delete">Xóa</button>
           </form>
         </td>

@@ -5,6 +5,7 @@
 {% block content %}
     <h1>Liên hệ với chúng tôi</h1>
     <form method="POST" action="/contact">
+        <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
         <div>
             <label for="name">Họ tên:</label>
             <input type="text" id="name" name="name" required>
